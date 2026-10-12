@@ -38,14 +38,13 @@ def get_user_data():
  conn.close()
  return data
 
-# --- SHIVA'S SMART LOOP (Error Solving) ---
 def auto_fix_error(error_message):
- """Shiva tries to fix the error automatically."""
- if "permission denied" in str(error_message).lower():
- return "sudo " + str(error_message)
- if "command not found" in str(error_message).lower():
- return "apt install " + str(error_message).replace("command not found", "").strip()
- return str(error_message)
+    """Shiva tries to fix the error automatically."""
+    if "permission denied" in str(error_message).lower():
+        return "sudo " + str(error_message)
+    if "command not found" in str(error_message).lower():
+        return "apt install " + str(error_message).replace("command not found", "").strip()
+    return str(error_message)
 
 def execute_with_smart_loop(command):
  max_retries = 3
