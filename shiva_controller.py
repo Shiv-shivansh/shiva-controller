@@ -51,9 +51,10 @@ def execute_with_smart_loop(command):
  attempt = 0
  
  while attempt < max_retries:
- try:
- # Execute the command
- result = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=30)
+    try:
+    # Execute the command
+    result = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=30
+    )
  
  # Success?
  if result.returncode == 0:
