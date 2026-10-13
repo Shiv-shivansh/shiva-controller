@@ -51,26 +51,31 @@ def execute_with_smart_loop(command):
  attempt = 0
  
  while attempt < max_retries:
-    try:
-    # Execute the command
-    result = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=30
-    )
- 
- # Success?
- if result.returncode == 0:
- return result.stdout
- else:
- # Failure? Shiva tries to fix it
- error_msg = result.stderr
- print(f"[SHIVA LOG]: Error detected on attempt {attempt + 1}. Attempting auto-fix...")
- fixed_command = auto_fix_error(error_msg)
- attempt += 1
- continue
- 
- except subprocess.TimeoutExpired:
- return "Error: Command took too long."
- except Exception as e:
- return f"Critical Error: {str(e)}"
+        try:
+            result = subprocess.run(
+                command,
+                shell=True,
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+
+            if result.returncode == 0:
+                return result.stdout
+            else:
+                error_msg = result.stderr
+                print(f"[SHIVA LOG]: Error on attempt {attempt + 1}")
+                attempt += 1
+
+        except subprocess.TimeoutExpired:
+            print("Error: Command timed out.")
+            attempt += 1
+
+        except Exception as e:
+            return f"Error: {str(e)}"
+
+        return "Command failed after maximum retries."
+
  
  return "Error: Could not resolve command after 3 attempts."
 
